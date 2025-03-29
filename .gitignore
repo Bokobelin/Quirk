@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/quirk
+quirk.so
+quirk.dylib
+quirk.dll
+quirk.a
+quirk.lib
+quirk-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst

@@ -1,0 +1,12 @@
+{
+	"authors": [
+		"Bokobelin"
+	],
+	"copyright": "Copyright © 2025, Bokobelin",
+	"dependencies": {
+		"pegged": "~>0.4.9"
+	},
+	"description": "A new JS runtime.",
+	"license": "Apache-2.0",
+	"name": "quirk"
+}
