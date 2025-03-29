@@ -58,9 +58,9 @@ Token[] tokenize(string code) {
 }
 
 bool isNumeric(string s) {
-    import std.ascii : isDigit;
-    import std.algorithm : all;
-    return s.length > 0 && s.all!isDigit;
+    import std.regex : match;
+    // Match integers or decimals (e.g., "42", "3.14")
+    return !s.match(`^\d+(\.\d+)?$`).empty;
 }
 
 bool isIdentifier(string s) {

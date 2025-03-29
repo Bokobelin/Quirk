@@ -2,6 +2,7 @@
     import std.array;
     import std.string;
     import tokenizer; // Import tokenizer to use Token
+    import std.algorithm;
 
     struct ASTNode {
         string type;
@@ -26,18 +27,17 @@ ASTNode parse(Token[] tokens) {
             root.children ~= logNode;
             i += 4;  // Skip `console.log(x);`
        } else if (tokens[i].type == "Identifier" && tokens[i + 1].value == "=") {
-    // Parse the right-hand side as an expression (e.g., z = x + y)
     ASTNode assignNode = ASTNode("Assignment", tokens[i].value);
 
-    if (i + 3 < tokens.length && tokens[i + 3].value == "+") {
-        // We have an addition expression, so handle it
-        ASTNode additionNode = ASTNode("Addition", "");
-        additionNode.children ~= ASTNode("Identifier", tokens[i + 2].value); // Left operand (x)
-        additionNode.children ~= ASTNode("Identifier", tokens[i + 4].value); // Right operand (y)
-        assignNode.children ~= additionNode;
+    if (i + 3 < tokens.length && ["+", "-", "*", "/"].canFind(tokens[i + 3].value)) {
+        // Handle binary expressions
+        ASTNode binaryNode = ASTNode("BinaryExpression", tokens[i + 3].value);
+        binaryNode.children ~= ASTNode("Identifier", tokens[i + 2].value); // Left operand
+        binaryNode.children ~= ASTNode("Identifier", tokens[i + 4].value); // Right operand
+        assignNode.children ~= binaryNode;
         i += 6; // Skip `z = x + y;`
     } else {
-        assignNode.children ~= ASTNode("Identifier", tokens[i + 2].value); // Direct assignment (e.g., z = x)
+        assignNode.children ~= ASTNode("Identifier", tokens[i + 2].value); // Direct assignment
         i += 4; // Skip `z = x;`
     }
 
@@ -47,7 +47,7 @@ ASTNode parse(Token[] tokens) {
         }
     }
 
-    writeln("Generated AST: ", root); // Debug print
+    //writeln("Generated AST: ", root); // Debug print
     return root;
 }
 

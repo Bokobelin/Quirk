@@ -10,8 +10,8 @@ import std.conv;
 // Dictionary to store variable values
 __gshared string[string] variables;
 
-int interpret(ASTNode node) {
-    writeln("Interpreting node: ", node.type, " with value: ", node.value); // Debug print
+float interpret(ASTNode node) {
+    //writeln("Interpreting node: ", node.type, " with value: ", node.value); // Debug print
 
     if (node.type == "Program") {
         foreach (child; node.children) {
@@ -27,18 +27,16 @@ int interpret(ASTNode node) {
     } else if (node.type == "BinaryExpression") {
         auto left = evaluate(node.children[0]);
         auto right = evaluate(node.children[1]);
-        if (node.value == "+") return to!int(left) + to!int(right);
-        if (node.value == "-") return to!int(left) - to!int(right);
-        if (node.value == "*") return to!int(left) * to!int(right);
-        if (node.value == "/") return to!int(left) / to!int(right);
+        if (node.value == "+") return to!float(left) + to!float(right);
+        if (node.value == "-") return to!float(left) - to!float(right);
+        if (node.value == "*") return to!float(left) * to!float(right);
+        if (node.value == "/") return to!float(left) / to!float(right);
     }
 
     return -1;
 }
 
 string evaluate(ASTNode node) {
-    writeln("Evaluating node: ", node.type, " with value: ", node.value); // Debug print
-
     if (node.type == "Literal") {
         return node.value;
     }
@@ -56,12 +54,12 @@ string evaluate(ASTNode node) {
             right = variables.get(node.children[1].value, "0");
         }
 
-        // For Addition nodes or BinaryExpression with "+" operator
+        // Perform arithmetic with floating-point numbers
         if (node.type == "Addition" || node.value == "+") 
-            return to!string(to!int(left) + to!int(right));
-        if (node.value == "-") return to!string(to!int(left) - to!int(right));
-        if (node.value == "*") return to!string(to!int(left) * to!int(right));
-        if (node.value == "/") return to!string(to!int(left) / to!int(right));
+            return to!string(to!float(left) + to!float(right));
+        if (node.value == "-") return to!string(to!float(left) - to!float(right));
+        if (node.value == "*") return to!string(to!float(left) * to!float(right));
+        if (node.value == "/") return to!string(to!float(left) / to!float(right));
     }
     return "0";
 }
